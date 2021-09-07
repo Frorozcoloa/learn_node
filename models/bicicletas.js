@@ -15,6 +15,19 @@ Bicicletas.add = function(aBici){
     Bicicletas.allBicis.push(aBici);
 }
 
+Bicicletas.findById = function(id){
+    var aBici = Bicicletas.allBicis.find(x=> x.id === id);
+
+    if(aBici)
+        return aBici;
+    else
+        throw new(`No existe una bicicleta con el id ${id}`)
+}
+
+Bicicletas.removeById = (id)=>{
+    Bicicletas.allBicis = Bicicletas.allBicis.filter(x => !(x.id==id))
+}
+
 var a = new Bicicletas(1, 'rojo', 'urbana', [-34.6012424, -58.38612897])
 var b = new Bicicletas(2, 'blanca', 'urbana', [-34.591635, -58.3862397])
 
