@@ -11685,3 +11685,9 @@ body {
 .footer {
   padding: 5rem 0;
 }
+
+
+
+#main_map{
+  height:600px;
+}
