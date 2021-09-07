@@ -13,6 +13,7 @@ block content
             th(scope='col') modelo
             th(scope='col') Ubicacion
             th(scope='col') 
+            th(scope='col') 
       tbody
         each bici in bicis 
           tr
@@ -20,6 +21,8 @@ block content
             td=bici.color 
             td=bici.modelo 
             td=bici.ubicacion 
+            td 
+              a(href=`bicicletas/${bici.id}/update`) Editar
             td 
               form.inline(method='post' action=`bicicletas/${bici.id}/delete`)
                 input(type="hidden" name="id" value=bici.id)
