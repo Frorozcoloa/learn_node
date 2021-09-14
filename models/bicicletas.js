@@ -28,10 +28,11 @@ Bicicletas.removeById = (id)=>{
     Bicicletas.allBicis = Bicicletas.allBicis.filter(x => !(x.id==id))
 }
 
-var a = new Bicicletas(1, 'rojo', 'urbana', [-34.6012424, -58.38612897])
+/*var a = new Bicicletas(1, 'rojo', 'urbana', [-34.6012424, -58.38612897])
 var b = new Bicicletas(2, 'blanca', 'urbana', [-34.591635, -58.3862397])
 
 Bicicletas.add(a);
 Bicicletas.add(b);
+*/
 
 module.exports = Bicicletas;
