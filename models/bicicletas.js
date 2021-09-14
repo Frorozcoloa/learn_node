@@ -21,7 +21,7 @@ Bicicletas.findById = function(id){
     if(aBici)
         return aBici;
     else
-        throw new(`No existe una bicicleta con el id ${id}`)
+        return "Not found"
 }
 
 Bicicletas.removeById = (id)=>{

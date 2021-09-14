@@ -20,5 +20,5 @@ exports.bicicleta_create = (req, res)=>{
 
 exports.bicicleta_delete = (req, res) => {
     Bicicletas.removeById(req.body.id)
-    res.status(200).send();
+    res.status(204).send();
 }
