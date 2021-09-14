@@ -12,3 +12,4 @@
 [0m2021.09.14 09:14:42 INFO  time: initialize in 2.19s[0m
 [0m2021.09.14 09:14:46 WARN  Build server is not auto-connectable.[0m
 [0m2021.09.14 09:14:46 WARN  no build tool detected in workspace 'C:\Users\fredy\OneDrive\Escritorio\Fredy\coursera\Full Stack\red_bicicletas'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. [0m
+[0m2021.09.14 11:30:16 INFO  shutting down Metals[0m

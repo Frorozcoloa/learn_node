@@ -2,6 +2,7 @@ var Bicicletas = require('../../models/bicicletas');
 var request = require('request');
 var server = require('../../bin/www');
 
+beforeEach(()=>{console.log('Testenado...')})
 
 describe('Bicicleta API', ()=>{
     describe('GET BICILETAS', ()=>{
@@ -41,6 +42,22 @@ describe('Bicicleta API', ()=>{
                 expect(Bicicletas.findById(4)).toBe('Not found');
                 done()
             })
+        })
+    })
+    describe("UPDATE bicicletas/update", ()=>{
+        it("status 200", (done)=>{
+            var a = new Bicicletas(10, 'rojo', 'urbana', [-34.6012424, -58.38612897])
+            Bicicletas.add(a);
+
+            var aBici = {id:10, color:'Verde', modelo:'Montaña', lat:-40, log:60};
+            request.put({url:"http://localhost:5000/api/bicicletas/update", form:aBici}, 
+                (err,res, body) => {
+                    expect(res.statusCode).toBe(200);
+                    expect(Bicicletas.findById(10).color).toBe('Verde');
+                    expect(Bicicletas.findById(10).modelo).toBe('Montaña')
+                    expect(Bicicletas.findById(10).ubicacion).toEqual(['-40', '60'])
+                    done();
+                })
         })
     })
 })
