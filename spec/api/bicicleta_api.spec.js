@@ -1,8 +1,9 @@
+
 var Bicicletas = require('../../models/bicicletas');
 var request = require('request');
 var server = require('../../bin/www');
 
-beforeEach(()=>{console.log('Testenado...')})
+
 
 describe('Bicicleta API', ()=>{
     describe('GET BICILETAS', ()=>{

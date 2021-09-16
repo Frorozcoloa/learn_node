@@ -1,5 +1,61 @@
-var Bicicletas = require('../../../models/bicicletas')
+var mongoose = require('mongoose');
+var jasmine = require('jasmine');
 
+var Bicicleta = require('../../../models/bicicletas')
+
+describe('Testing Bicicletas', function(){
+    var originalTimeout;
+    beforeEach(function(done){
+        originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
+
+        var mongoDB = 'mongodb://localhost/red_bicicletas';
+        mongoose.connect(mongoDB, {useNewUrlParser:true});
+
+        const db = mongoose.connection;
+        db.on('error', console.error.bind(console, 'Mongodb connectio error: '))
+        db.once('open', ()=>{
+            console.log('We are connected to test database!');
+            done;
+        })
+    });
+
+    afterEach((done)=>{
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+        Bicicleta.deleteMany({}, (err, success)=>{
+            if(err) console.log(err);
+            done();
+        })
+    });
+
+    /* describe('Bicicleta.createIstance', ()=>{
+        it('Crea una instancia de Bicicleta', (done)=>{
+            var bici = Bicicleta.createInstance(1, "verde", "urbana", [-34.5, -54.1]);
+
+            expect(bici.code).toBe(1);
+            expect(bici.color).toBe("verde");
+            expect(bici.modelo).toBe("urbana");
+            expect(bici.ubicacion[0]).toEqual(-34.5);
+            expect(bici.ubicacion[1]).toEqual(-54.1);
+            done();
+        })
+    }); */
+
+    describe('Bicicletas allBicis', ()=>{
+        it('Comienza vacida', (done)=>{
+            Bicicleta.allBicis((err, bicis)=>{
+                expect(bicis.length).toBe(0);
+                done();
+            })
+        })
+    })
+
+
+})
+
+
+
+/* 
 beforeEach(()=>{Bicicletas.allBicis = []})
 
 describe('Bicicletas.allBicis', ()=>{
@@ -49,4 +105,4 @@ describe('Bicicleta.removeById',()=>{
         Bicicletas.removeById(1)
         expect(Bicicletas.allBicis.length).toBe(1)
     })
-})
+}) */
