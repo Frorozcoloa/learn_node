@@ -1,34 +1,36 @@
 var mongoose = require('mongoose');
 var jasmine = require('jasmine');
 
-var Bicicleta = require('../../../models/bicicletas')
+var Bicicleta = require('../../../models/bicicletas');
+const bicicletas = require('../../../models/bicicletas');
 
 describe('Testing Bicicletas', function(){
-    var originalTimeout;
-    beforeEach(function(done){
-        originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
+    
+    beforeAll(function(done) {
+        mongoose.connection.close().then(() => {
+            var mongoDB = 'mongodb://localhost/testdb';
+            mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
+            //mongoose.set('useCreateIndex', true);
 
-        var mongoDB = 'mongodb://localhost/red_bicicletas';
-        mongoose.connect(mongoDB, {useNewUrlParser:true});
 
-        const db = mongoose.connection;
-        db.on('error', console.error.bind(console, 'Mongodb connectio error: '))
-        db.once('open', ()=>{
-            console.log('We are connected to test database!');
-            done;
-        })
+            var db = mongoose.connection;
+            db.on('error', console.error.bind(console, 'MongoDB connection error: '));
+            db.once('open', function () {
+                console.log('We are connected to test database!');
+                done();
+            });
+        });
     });
 
-    afterEach((done)=>{
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
-        Bicicleta.deleteMany({}, (err, success)=>{
-            if(err) console.log(err);
+    afterEach(function(done){
+        Bicicleta.deleteMany({}, function(err, success){
+            if (err) console.log(err); 
             done();
-        })
+        });
+        
     });
 
-    /* describe('Bicicleta.createIstance', ()=>{
+    describe('Bicicleta.createIstance', ()=>{
         it('Crea una instancia de Bicicleta', (done)=>{
             var bici = Bicicleta.createInstance(1, "verde", "urbana", [-34.5, -54.1]);
 
@@ -39,9 +41,10 @@ describe('Testing Bicicletas', function(){
             expect(bici.ubicacion[1]).toEqual(-54.1);
             done();
         })
-    }); */
+    }); 
 
     describe('Bicicletas allBicis', ()=>{
+
         it('Comienza vacida', (done)=>{
             Bicicleta.allBicis((err, bicis)=>{
                 expect(bicis.length).toBe(0);
@@ -49,6 +52,44 @@ describe('Testing Bicicletas', function(){
             })
         })
     })
+    describe('Bicicleta.add', ()=>{
+        it('agrega solo una bici', (done)=>{
+            var aBici = new Bicicleta({code:1, color: "verde", modelo:"urbana"});
+            Bicicleta.add(aBici, (err, bicis)=>{
+                if(err) console.log(err);
+                Bicicleta.allBicis((err, bicis)=>{
+                    expect(bicis.length).toEqual(1);
+                    expect(bicis[0].code).toEqual(aBici.code);
+                    done();
+                })
+            });
+        })
+    })
+    describe('Bicicleta.findByCode', ()=>{
+        it('debe devolver la bici con code 1',(done)=>{
+            Bicicleta.allBicis((err, bicis)=>{
+                expect(bicis.length).toBe(0);
+                done();
+
+                var aBici = new Bicicleta({code:1, color: "verde", modelo:"urbana"});
+                Bicicleta.add(aBici, (err, newBici)=>{
+                    if(err) console.log(err);
+
+                    var aBici2 = new Bicicleta({code:2, color: "blanco", modelo:"montaña"});
+                    Bicicleta.add(aBici2, (err, newBici2)=>{
+                        if(err) console.log(err);
+                        Bicicleta.findByCode(1, (err, targetBici)=>{
+                            expect(targetBici.code).toBe(aBici.code);
+                            expect(targetBici.color).toBe(aBici.color);
+                            expect(target.modelo).toBe(aBici.modelo);
+                            done();
+                        })
+                    })
+                })
+            })
+        })
+    })
+    describe('Delete', function)
 
 
 })
