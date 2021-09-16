@@ -1,35 +1,31 @@
-var  Bicicletas = require('../../models/bicicletas')
+var  Bicicleta = require('../../models/bicicletas')
 
 exports.bicicleta_list = (req, res)=>{
-    res.status(200).json({
-        bicicletas: Bicicletas.allBicis
+    Bicicleta.allBicis(function(err,bicis){
+        res.status(200).json({Bicicletas:bicis});
     })
 }
 
 exports.bicicleta_create = (req, res)=>{
-    var bici = new Bicicletas(req.body.id, req.body.color, req.body.modelo);
-    bici.ubicacion = [req.body.lat, req.body.log]
-
-    Bicicletas.add(bici)
+    var bici = Bicicleta.createInstance(req.body.id, req.body.color, req.body.modelo, [req.body.lat, req.body.log]);
+    Bicicleta.add(bici)
 
     res.status(200).json({
-        bicicleta:bici
+        Bicicleta:bici
     })
 }
 
 
 exports.bicicleta_delete = (req, res) => {
-    Bicicletas.removeById(req.body.id)
-    res.status(204).send();
+    Bicicleta.removeByCode(req.body.code, (err, TargetBici)=>{
+        res.status(204).json({Bicicleta: TargetBici})
+    })
+    
 }
 
 exports.bicicleta_update = (req, res) => {
-    var bicicleta = Bicicletas.findById(req.body.id);
-    bicicleta.modelo = req.body.modelo;
-    bicicleta.color = req.body.color;
-    bicicleta.ubicacion = [req.body.lat, req.body.log]
-
-    res.status(200).json({
-        bicicleta: bicicleta,
+    var update = {color: req.body.color, modelo:req.body.modelo, ubicacion:[req.body.lat, req.body.log]}
+    Bicicleta.updateByCode(req.body.code, update, (err, data) => {
+        res.status(200).json({Bicicleta: data})
     })
 }
