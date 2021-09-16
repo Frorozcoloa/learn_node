@@ -81,7 +81,7 @@ describe('Testing Bicicletas', function(){
                         Bicicleta.findByCode(1, (err, targetBici)=>{
                             expect(targetBici.code).toBe(aBici.code);
                             expect(targetBici.color).toBe(aBici.color);
-                            expect(target.modelo).toBe(aBici.modelo);
+                            expect(targetBici.modelo).toBe(aBici.modelo);
                             done();
                         })
                     })
@@ -89,7 +89,44 @@ describe('Testing Bicicletas', function(){
             })
         })
     })
-    describe('Delete', function)
+    
+    describe('Bicicleta.remoceByCode', ()=>{
+        it('debe eliminar la bicicleta 1',(done)=>{
+            var aBici = new Bicicleta({code:1, color: "verde", modelo:"urbana"});
+            Bicicleta.add(aBici, (err, newBici)=>{
+                if(err) console.log(err);
+
+                var aBici2 = new Bicicleta({code:2, color: "blanco", modelo:"montaña"});
+                Bicicleta.add(aBici2, (err, newBici2)=>{
+                    if(err) console.log(err);
+                    Bicicleta.remoceByCode(1, (err, targetBici)=>{
+                        expect(targetBici.color).toBe(undefined);
+                        expect(targetBici.modelo).toBe(undefined);
+                        done();
+                    })
+                })
+            })
+        })
+    })
+    
+    describe('Bicicleta.updateByCode', ()=>{
+        it('debe update la bicicleta 1',(done)=>{
+            var aBici = new Bicicleta({code:1, color: "verde", modelo:"urbana"});
+            Bicicleta.add(aBici, (err, newBici)=>{
+                if(err) console.log(err);
+
+                var update = {color: 'rojo', modelo:'montaña'}
+                Bicicleta.updateByCode(1, update,(err, targetBici)=>{
+                    Bicicleta.findByCode(1, (err, targetBici)=>{
+                        expect(targetBici.code).toBe(aBici.code);
+                        expect(targetBici.color).toBe(update.color);
+                        expect(targetBici.modelo).toBe(update.modelo);
+                        done();
+                    })
+                })
+            })
+        })
+    })
 
 
 })

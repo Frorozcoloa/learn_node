@@ -27,6 +27,10 @@ bicicletaSchema.statics.createInstance = function(code, color, modelo, ubicacion
     })
 }
 
+bicicletaSchema.statics.updateByCode = function(code,update, cb){
+    this.findOneAndUpdate(code,update, cb)
+}
+
 bicicletaSchema.statics.add = function(aBici, cb){
     this.create(aBici, cb)
 }
