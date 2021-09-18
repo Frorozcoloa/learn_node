@@ -1,13 +1,16 @@
 var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema
+var Reserva = require('./reserva')
 
 var usuarioSchema = new Schema({
     nombre: String,
 })
 
-userSchema.methods.reservar = function(biciId, desde, hasta, cb){
+usuarioSchema.methods.reservar = function(biciId, desde, hasta, cb){
     var reservar = new Reserva({usuario: this._id, bicicleta: biciId, desde: desde, hasta: hasta})
     console.log(reservar)
-    reserva.save(cb)
+    reservar.save(cb)
 }
+
+module.exports = mongoose.model('Usuario', usuarioSchema)

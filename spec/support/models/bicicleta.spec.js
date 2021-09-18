@@ -1,8 +1,6 @@
 var mongoose = require('mongoose');
-var jasmine = require('jasmine');
 
 var Bicicleta = require('../../../models/bicicletas');
-const bicicletas = require('../../../models/bicicletas');
 
 describe('Testing Bicicletas', function(){
     
