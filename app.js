@@ -9,6 +9,8 @@ var usersRouter = require('./routes/users');
 var bicicletasRouter = require('./routes/bicicletas');
 var bicicletasAPIRouter = require('./routes/api/bicicletas.js')
 var UsuarioAPIRouter = require('./routes/api/usuarios.js')
+var usuariosRouter = require('./routes/usuarios.js')
+var tokenRouter = require('./routes/TokenC.js')
 
 var app = express();
 var mongoose = require('mongoose');
@@ -34,6 +36,8 @@ app.use('/users', usersRouter);
 app.use('/bicicletas', bicicletasRouter);
 app.use('/api/bicicletas', bicicletasAPIRouter);
 app.use('/api/usuarios', UsuarioAPIRouter);
+app.use('/usuarios', usuariosRouter)
+app.use('/token', tokenRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

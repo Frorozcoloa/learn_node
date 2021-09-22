@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var bicicletaController = require('../../controllers/api/usuarios')
+var bicicletaController = require('../../controllers/api/usuariosAPI')
 
 router.get('/',  bicicletaController.usuario_list);
 router.post('/create', bicicletaController.usuario_create);
