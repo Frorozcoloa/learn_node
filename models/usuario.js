@@ -60,7 +60,7 @@ usuarioSchema.methods.reservar = function(biciId, desde, hasta, cb){
 
 usuarioSchema.methods.enviar_email_bienvenida = function(cb) {
     const token = new Token({_userId: this.id, token: crypto.randomBytes(16).toString('hex')});
-    const email_destination = this.email;
+    const email_destination = this.email;2
     token.save(function (err) {
         if (err) { return console.log(err.message); }
 
@@ -72,11 +72,41 @@ usuarioSchema.methods.enviar_email_bienvenida = function(cb) {
 
         };
         mailer.sendMail(mailOptions, function (err) {
-            if (err) { return console.log(err.message + ' error ' + token.token); }
+            if (err) { return console.log(err.message + ' error \n http://localhost:5000/token/confirmation/'+token.token); }
 
             console.log('Se ha enviado un email de bienvenida a: ' + email_destination + ':')
         });
     });
 }
+
+usuarioSchema.methods.resetPassword = function(cb) {
+    const token = new Token({_userId: this.id, token: crypto.randomBytes(16).toString('hex')});
+    const email_destination = this.email;
+    token.save(function (err) {
+      if(err) return cb(err); 
+  
+      const mailOptions = {
+        from: 'no-replay@redesbicicletas.com',
+        to: email_destination,
+        subject: 'Reseteo de password de cuenta',
+        text: 'Hola, \n\n' + 'Por favor para resetear el password de su cuenta haga click en este link: \n' + 'http://localhost:5000' + '\/resetPassword\/' + token.token + '\n'
+      };
+  
+      mailer.sendMail(mailOptions, function(err) {
+        if(err) { return cb(err); }
+  
+        console.log('Se envió un mail para resetear el password a:  ' + email_destination + '.');
+      });
+  
+      cb(null);
+    });
+  }
+
+usuarioSchema.methods.reservar = function(biciId, desde, hasta, cb){
+    var reserva = new Reserva({usuario: this._id, bicicleta: biciId, desde: desde, hasta: hasta});
+    console.log(reserva);
+    reserva.save(cb);
+}
+
 
 module.exports = mongoose.model('Usuario', usuarioSchema)
